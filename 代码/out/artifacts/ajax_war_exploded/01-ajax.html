@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--用户点击按钮发出ajax请求-->
+<input type="button" value="hello ajax" id="btn">
+<!--ajax接受了响应的数据后，在div中渲染-->
+<div class="mydiv"></div>
+
+<script>
+    window.onload = function (){
+        document.getElementById('btn').addEventListener('click',function() {
+            // 发送ajax的步骤
+            // 1第一步：创建ajax核心对象XMLHttpRequest
+            let xhr= new XMLHttpRequest()
+            // 2第二步：注册回调函数
+            // XMLHttpRequest的值改变的时候,会调用这个函数
+            xhr.addEventListener("readystatechange", function (){
+                // 这里的回调会被调用多次
+                // 0 -> 1 调用一次
+                // 1 -> 2 调用一次
+                // 2 -> 3 调用一次
+                // 3 -> 4 调用一次
+                console.log(xhr.readyState)
+                // 当XMLHttpRequest的响应值为4的时候，代表相应结束了
+                // 4 -> 5 没有
+                if (this.readyState == 4){ // 可以使用this，this指向调用者
+                    console.log('响应结束了')
+                    // 相应结束之后，一般都会有一个HTTP的状态码
+                    // HTTP状态码常见：200成功；404找不到；500服务器内部错误
+                    // HTTP状态码是HTTP协议的一部分，HTTP协议规定，服务器响应后有个状态码。
+                    // 获取HTTP状态码 属性status
+                    console.log('HTTP相应状态码:',this.status)
+                }
+            })
+            // 3第三步：开启通道(open只在浏览器和服务器建立连接，打开通道，并不会发送请求)
+            // XMLHttpRequest对象的open方法
+            // open(method,url,async,user,psw)
+            // method：请求方式，get、post或其他请求方式
+            // url：请求路径
+            // async：是否异步，true:开启异步,false：不开启异步；大多是是true
+            // user:用户名 psw：密码；用户名和密码进行身份认证，说明要想访问这个服务器上的资源，可能需要身份验证；是否徐亚提供看服务器
+            xhr.open("get",'/ajax',true)
+            // 4第四步：发送请求
+            xhr.send()
+        })
+    }
+</script>
+</body>
+</html>
