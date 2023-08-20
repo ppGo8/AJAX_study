@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发送ajax get请求</title>
+</head>
+<body>
+<button id="btn">发送ajax请求</button>
+<!--任一容器都可以,接受回来的东西想要设置到哪里都可以-->
+<span class="myspan"></span>
+<script>
+    window.onload = function (){
+        document.querySelector("#btn").addEventListener('click',function (){
+            // 创建xhr对象
+            const xhr = new XMLHttpRequest()
+            // 注册回调函数
+            xhr.addEventListener("readystatechange", callback)
+            // 建立通道
+            xhr.open("get","/ajax/ajaxrequst2",true)
+            // 发送请求
+            xhr.send()
+        })
+    }
+
+    // 需求：将02-ajax.html代码换一种方式写;这个写法不常见；不建议
+    function callback() {
+        // 用this也可以；但是这里会意义不明确
+        // 其他方法：xhr全局定义；this改成xhr
+        if (this.readyState === 4){
+            if (this.status ===200){
+                document.querySelector('.myspan').innerHTML = this.responseText
+            }else{
+                alert(this.status)
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

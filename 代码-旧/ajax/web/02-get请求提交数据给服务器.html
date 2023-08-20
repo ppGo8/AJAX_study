@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发送ajax get请求</title>
+</head>
+<body>
+id:<input type="text"  id="id"   name="userid"> <br />
+密码:<input type="text" id="p"  name="pwd">    <br />
+<button id="btn">发送ajax请求</button>
+<!--任一容器都可以,接受回来的东西想要设置到哪里都可以-->
+<span class="myspan"></span>
+<script>
+    window.onload = function (){
+        document.querySelector("#btn").addEventListener('click',function (){
+            // 创建xhr对象
+            const xhr = new XMLHttpRequest()
+
+            // 注册回调函数
+            xhr.addEventListener("readystatechange", function (){
+                if (this.readyState===4){
+                    if (this.status===200){
+                        // 通过xhr对象的responseText属性可以获得服务器响应的内容
+                        // response以字符串的形式获取数据。不管服务器响应的是什么,都以普通文本的形式获取。(服务器可能响应回来:普通文本/xml/JSON)
+                        document.querySelector('.myspan').innerHTML = this.responseText
+                    }else{
+                        alert(this.status)
+                    }
+                }
+            })
+            // 建立通道
+            // 获得用户填写的信息
+            const userid =document.querySelector('#id')
+            const pwd = document.querySelector('#p')
+
+            xhr.open("get","/ajax/ajaxrequst2?"+userid.name+"="+userid.value + "&" + pwd.name +"=" +pwd.value,true)
+            // 发送请求
+            xhr.send()
+        })
+    }
+</script>
+
+</body>
+</html>

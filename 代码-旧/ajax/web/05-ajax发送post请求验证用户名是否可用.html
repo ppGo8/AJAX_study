@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+用户名：<input type="text" id="username" >
+<div id="tips"></div>
+
+<script type="text/javascript">
+  window.addEventListener("load",function (){
+      document.querySelector("#username").addEventListener("focus",function (){
+          document.querySelector("#tips").innerHTML =""
+      })
+    document.querySelector("#username").addEventListener("blur",function (){
+      // 1.创建xhr对象
+      const xhr = new XMLHttpRequest();
+      // 2.注册回调函数
+      xhr.addEventListener("readystatechange", function (){
+        if (this.readyState === 4){
+          if (this.status===200){
+            document.querySelector("#tips").innerHTML = xhr.responseText
+              console.log(xhr.responseText)
+          }else{
+            alert(this.status)
+          }
+        }
+      })
+      // 3.开启通道
+      xhr.open("post","/ajax/ajaxrequest5",true)
+      // 4.发送数据
+      // 设置请求头
+      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+      // 获取数据并发送
+      const username = document.querySelector("#username").value
+      xhr.send("username="+username)
+
+    })
+  })
+
+
+</script>
+</body>
+</html>
