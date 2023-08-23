@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS基于对象的编程</title>
+</head>
+<body>
+<script >
+    // JS中创建类的方法
+    function Stu(stuname,age){
+        this.stuname = stuname
+        this.age = age
+        this.sing = function (){
+            console.log(this.stuname +" sing...")
+        }
+    }
+    // 静态方法 在构造函数外直接调用类名添加或修改
+    Stu.doOther = function (){
+        console.log("do other things...")
+    }
+
+    // 创建对象
+    // Stu() 直接这样调用，是把它当做函数去执行不会创建对象
+    const stu1 = new Stu("LiHua",22)
+    console.log(stu1.stuname)
+    console.log(stu1.age)
+    stu1.sing()
+    Stu.doOther()
+
+    // 还可以给某个类型添加拓展方法
+    Stu.prototype.print = function (){
+        console.log(this.stuname + "打印...") // 函数使用外界变量的方法：1.参数 2.this 3.全局变量
+    }
+    stu1.print()
+
+</script>
+
+</body>
+</html>

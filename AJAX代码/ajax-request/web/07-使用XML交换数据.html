@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用XML交换数据</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        table{
+            text-align: center;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        th,td{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<input type="button" value="显示学生信息" id="btn">
+
+<table>
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>地区</th>
+    </tr>
+    </thead>
+    <tbody>
+<!--    <tr>-->
+<!--        <td>1</td>-->
+<!--        <td>张三</td>-->
+<!--        <td>25</td>-->
+<!--        <td>天河区</td>-->
+<!--    </tr>-->
+    </tbody>
+</table>
+<script type="text/javascript">
+    // 点击按钮发送ajax请求
+    document.querySelector("#btn").addEventListener("click",function (){
+        // 1.新建xhr对象
+        const xhr = new XMLHttpRequest()
+        // 2.注册回调函数
+        xhr.addEventListener("readystatechange", function (){
+            if (xhr.readyState === 4){
+                if (xhr.status === 200){
+                    // 使用XMLHttpRequest对象的responseXML属性接收返回的数据，可以自动封装为document对象。
+                    // console.log(xhr.responseXML)
+                    // 前端手动拼接
+                    const uname = xhr.responseXML.querySelectorAll("name")   // 函数调用者是返回来的document对象；而不是经常用的documnet；因为要查找的内容不再documnet里而在返回的对象中
+                    const age = xhr.responseXML.querySelectorAll("age")
+                    const addr = xhr.responseXML.querySelectorAll("addr")
+                    const stuinfo = []
+                    for (let i =0;i<uname.length;i++){
+                        stuinfo.push("<tr><td>"+(i+1)+"</td><td>"+uname[i].innerHTML+"</td> <td>"+age[i].innerHTML+"</td><td>"+addr[i].innerHTML+"</td></tr>")
+                    }
+                    // 数组转字符串 渲染到页面中
+                    document.querySelector("tbody").innerHTML = stuinfo.join("")
+                } else{
+                    alert(xhr.status)
+                }
+            }
+        })
+
+        // 3.开启通道：注意里面的代码都要大写防止出问题
+        xhr.open("GET","/ajax/ajaxrequest7",true)
+        // 4.发送请求
+        xhr.send()
+    })
+
+</script>
+
+</body>
+</html>

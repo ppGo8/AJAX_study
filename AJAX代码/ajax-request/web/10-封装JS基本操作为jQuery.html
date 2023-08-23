@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>初次封装：根据id获取元素</title>
+</head>
+<body>
+<button type="button" id="btn1">显示信息</button>
+<div id="div1"></div>
+<input type="text" value="power" id="username">
+
+<script>
+    /* 1.封装根据id查找html元素节点的功能,其他的感兴趣自己完善 */
+    /* 2.觉得页面加载事件代码太长，想对其进行封装为：$(function(){}) */
+    /* 3.觉得innerHTML的代码太长，想对其进行改造为：html("")*/
+    /* 3.封装要彻底：在3的封装了为了使用实例方法因为返回了jQuery对象,导致JS中原生的其他代码不可用，因此需要用什么操作就还需要继续封装*/
+    function jQuery(selector){
+        // 判断传入的是字符串
+        if (typeof  selector === "string"){
+            if (selector.charAt(0)==="#"){
+                domObj = document.getElementById(selector.substring(1)) // 不在前面添加声明,那么就是全局变量；在任何地方都可以被访问
+                return new jQuery()  // 返回一个新的实例对象,使下面的this方法可以使用。
+            }
+        }
+
+        // window.onload 传入的是函数传入的是函数
+        // 执行的操作：页面加载完毕之后，注册回调调函。
+        if (typeof selector ==="function"){
+            // 在js中变量可以是任何类型
+            // 当selector是一个函数,执行以下原生js代码，当页面加载完毕后执行selector函数内容
+            window.onload = selector   // 此时selector是一个回调函数
+        }
+
+        // 定义一个html函数，代替 html(str) = innerHTML = “htmlstr”
+        // this说明是只有实例对象才可以调用该方法
+        this.html = function(htmlstr) {
+            domObj.innerHTML = htmlstr
+        }
+
+        // 封装要彻底
+        // 需要继续封装addevenelistener方法
+        // 因为该方法之前的调用者是dom对象,现在$(“”)返回的是jQuery对象,没办法继续使用
+        this.click = function (fun){
+            domObj.onclick = fun
+            // domObj.addEventListener("click",fun)
+        }
+
+        this.val = function (context){
+            // 传入参数 进行赋值操作
+            if (context){
+                domObj.value = context
+            }else {
+                // 不传入参数进行 查找操作
+                return domObj.value
+            }
+
+        }
+    }
+
+
+    $ = jQuery // jQuery太长,想用一个简单一点的写法
+
+
+    // 上面是封装代码部分
+    // ------------------------------------------------------------------------------------------------------
+    // 下面是原始代码
+    // window.addEventListener("load",
+    //     // document.getElementById("btn1").addEventListener("click",function (){
+    //     //     document.getElementById("div1").innerHTML = "<font color='red'>用户名不可用！！！</font>"
+    //     // })
+    //
+    //     // 1.上面的代码可以修改为：
+    //     $("#btn1").addEventListener("click",function (){
+    //         $("#div1").innerHTML = "<font color='red'>用户名不可用！！！</font>"
+    //     })
+    // )
+
+    // 2.继续修改后的调用
+    // $(function(){})  的作用是什么？
+    // 当页面加载完毕之后，执行function(){}这个函数
+    // $(function (){
+    //     $("#btn1").addEventListener("click",function (){
+    //         $("#div1").innerHTML = "<font color='red'>用户名不可用！！！</font>"
+    //     })
+    // })
+
+    // 3.继续修改后的调用，此时$()返回jQuery没办法使用dom对象的方法addEventListener
+    // $(function (){
+    //     $("#btn1").addEventListener("click",function (){
+    //         $("#div1").html("<font color='red'>用户名不可用！！！</font>")
+    //     })
+    // })
+    // 3.3继续完善 click事件
+    $(function (){
+        $("#btn1").click(function (){
+            $("#div1").html("<font color='red'>用户名不可用！！！</font>")
+            console.log($("#username").val("我是传入的参数"))
+        })
+    })
+</script>
+
+
+</body>
+</html>

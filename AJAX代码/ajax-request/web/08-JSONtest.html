@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>json test2</title>
+</head>
+<body>
+<!--问题:从后端java程序中响应回来的是json格式的字符串。（无法使用 对象名.属性的方法访问属性值；但是JSON对象可以）
+    需求：怎么把json格式的字符串转换成json对象-->
+<script>
+    // 服务器返回来的json字符串
+    const obj ="{\"username\":\"zhangsan\",\"password\":\"123\"}"
+    // 将json字符串转换成json对象才可以使用json的各种方法
+    // 1.eval()函数
+    // 2.JSON对象的一个方法：JOSN.parse()
+    const objjson = JSON.parse(obj)
+    console.log(objjson)
+    console.log(objjson.username)
+    console.log(objjson.password)
+
+</script>
+
+</body>
+</html>

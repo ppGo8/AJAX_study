@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>初次封装：根据id获取元素</title>
+</head>
+<body>
+<button type="button" id="btn1">显示信息</button>
+<div id="div1"></div>
+
+<script>
+    document.getElementById("btn1").addEventListener("click",function (){
+        document.getElementById("div1").innerHTML = "<font color='red'>用户名不可用！！！</font>"
+    })
+    
+</script>
+
+
+</body>
+</html>

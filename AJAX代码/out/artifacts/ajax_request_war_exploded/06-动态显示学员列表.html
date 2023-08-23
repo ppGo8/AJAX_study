@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax动态显示学员列表</title>
+    <style>
+        th,td{
+            text-align: center;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<!--点击按钮,发送ajax请求；服务端返回内容-->
+<button type="button" id="btn">显示学员信息</button>
+<table>
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>地址</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    // 点击按钮,发送ajax请求
+    document.querySelector("#btn").addEventListener("click",function (){
+        // 发送ajax请求
+        // 1.创建xhr
+        const xhr = new  XMLHttpRequest()
+        // 2.注册回调函数
+        xhr.addEventListener("readystatechange", function (){
+            if (xhr.readyState==4){
+                if (xhr.status==200){
+                    // 将返回的数据解析
+                    const jsonStr = JSON.parse(xhr.responseText)
+                    // 使用map方式遍历数组对象拼接
+                    const jsonHtml = jsonStr.map(function (ele,i) {
+                        return "<tr><td>" + (i+1) + "</td>" + "<td>" + ele.name + "</td>" + "<td>" + ele.age + "</td>" +"<td>" + ele.addr + "</td></tr>"
+                    })
+                    // 数组转字符串,去掉数组元素之间的逗号
+                    document.querySelector("tbody").innerHTML = jsonHtml.join("")
+                }else{
+                    alert(this.status)
+                }
+            }
+        })
+        // 3.开启通道
+        xhr.open("get","/ajax/ajaxrequest5",true)
+        // 4.发送请求
+        xhr.send()
+    })
+
+
+</script>
+
+</body>
+</html>
